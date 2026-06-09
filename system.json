@@ -103,12 +103,12 @@
   },
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stability",
-  "url": "https://github.com/patrickbuck1988/unknown-armies-3e",
-  "manifest": "https://raw.githubusercontent.com/patrickbuck1988/unknown-armies-3e/main/system.json",
-  "download": "https://github.com/patrickbuck1988/unknown-armies-3e/archive/refs/heads/main.zip",
+  "url": "https://github.com/shlordsoth99/UnknownArmies3ed_2",
+  "manifest": "https://raw.githubusercontent.com/shlordsoth99/UnknownArmies3ed_2/main/system.json",
+  "download": "https://github.com/shlordsoth99/UnknownArmies3ed_2/archive/refs/heads/main.zip",
   "license": "LICENSE.txt",
   "readme": "README.md",
-  "bugs": "https://github.com/patrickbuck1988/unknown-armies-3e/issues",
+  "bugs": "https://github.com/shlordsoth99/UnknownArmies3ed_2/issues",
   "changelog": "CHANGELOG.md",
   "flags": {
     "allowBugReporter": true
