@@ -1,313 +1,399 @@
 /**
  * Unknown Armies 3E Sidebar Enhancements
- * Proper Foundry VTT 13 implementation using native APIs
+ * Foundry VTT 13 compatible implementation
+ * Uses native DocumentDirectory API and DOM mutation observers
  */
 
 export function registerSidebarHooks() {
 
-  /**
-   * Hook into Actor Directory rendering to add custom buttons
-   */
-  Hooks.on('renderActorDirectory', (app, html, data) => {
-    // Find the header actions area
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    // Create custom buttons container
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-character" data-action="create-character" title="${game.i18n.localize('UA3E.CreateCharacter')}">
-          <i class="fas fa-user"></i>
-          <span>${game.i18n.localize('UA3E.CreateCharacter')}</span>
-        </button>
-        <button type="button" class="ua3e-btn ua3e-btn-npc" data-action="create-npc" title="${game.i18n.localize('UA3E.CreateNPC')}">
-          <i class="fas fa-skull"></i>
-          <span>${game.i18n.localize('UA3E.CreateNPC')}</span>
-        </button>
-      </div>
-    `);
-
-    // Insert after the create button
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    // Bind click handlers
-    customButtons.find('[data-action="create-character"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EActor('character');
-    });
-
-    customButtons.find('[data-action="create-npc"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EActor('npc');
-    });
+  // Wait for UI to be fully ready, then inject buttons
+  Hooks.once('ready', () => {
+    injectSidebarButtons();
+    setupMutationObserver();
   });
 
-  /**
-   * Hook into Item Directory rendering
-   */
-  Hooks.on('renderItemDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
+  // Also hook into render events as backup
+  Hooks.on('renderActorDirectory', injectActorButtons);
+  Hooks.on('renderItemDirectory', injectItemButtons);
+  Hooks.on('renderSceneDirectory', injectSceneButtons);
+  Hooks.on('renderJournalDirectory', injectJournalButtons);
+  Hooks.on('renderRollTableDirectory', injectRollTableButtons);
+  Hooks.on('renderCardsDirectory', injectCardsButtons);
+  Hooks.on('renderPlaylistDirectory', injectPlaylistButtons);
+  Hooks.on('renderCompendiumDirectory', injectCompendiumButtons);
+  Hooks.on('renderMacroDirectory', injectMacroButtons);
+}
 
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-identity" data-action="create-identity" title="${game.i18n.localize('UA3E.CreateIdentity')}">
-          <i class="fas fa-id-card"></i>
-          <span>${game.i18n.localize('UA3E.CreateIdentity')}</span>
-        </button>
-        <button type="button" class="ua3e-btn ua3e-btn-equipment" data-action="create-equipment" title="${game.i18n.localize('UA3E.CreateEquipment')}">
-          <i class="fas fa-toolbox"></i>
-          <span>${game.i18n.localize('UA3E.CreateEquipment')}</span>
-        </button>
-      </div>
-    `);
+/**
+ * Setup mutation observer to catch dynamically rendered directories
+ */
+function setupMutationObserver() {
+  const sidebar = document.querySelector('#sidebar');
+  if (!sidebar) return;
 
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          // Check if added node is a directory tab
+          if (node.matches?.('[data-tab]')) {
+            const tab = node.getAttribute('data-tab');
+            if (tab === 'actors') setTimeout(injectActorButtons, 50);
+            if (tab === 'items') setTimeout(injectItemButtons, 50);
+            if (tab === 'scenes') setTimeout(injectSceneButtons, 50);
+            if (tab === 'journal') setTimeout(injectJournalButtons, 50);
+            if (tab === 'tables') setTimeout(injectRollTableButtons, 50);
+            if (tab === 'cards') setTimeout(injectCardsButtons, 50);
+            if (tab === 'playlists') setTimeout(injectPlaylistButtons, 50);
+            if (tab === 'compendium') setTimeout(injectCompendiumButtons, 50);
+            if (tab === 'macros') setTimeout(injectMacroButtons, 50);
+          }
+
+          // Check nested elements
+          const directories = node.querySelectorAll?.('.directory');
+          if (directories) {
+            directories.forEach(dir => {
+              const tabId = dir.closest('[data-tab]')?.getAttribute('data-tab');
+              if (tabId === 'actors') injectActorButtons();
+              if (tabId === 'items') injectItemButtons();
+              if (tabId === 'scenes') injectSceneButtons();
+              if (tabId === 'journal') injectJournalButtons();
+              if (tabId === 'tables') injectRollTableButtons();
+              if (tabId === 'cards') injectCardsButtons();
+              if (tabId === 'playlists') injectPlaylistButtons();
+              if (tabId === 'compendium') injectCompendiumButtons();
+              if (tabId === 'macros') injectMacroButtons();
+            });
+          }
+        }
+      }
     }
-
-    customButtons.find('[data-action="create-identity"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EItem('identity');
-    });
-
-    customButtons.find('[data-action="create-equipment"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EItem('equipment');
-    });
   });
 
-  /**
-   * Hook into Scene Directory rendering
-   */
-  Hooks.on('renderSceneDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
+  observer.observe(sidebar, { childList: true, subtree: true });
+}
 
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-scene" data-action="create-scene" title="${game.i18n.localize('UA3E.CreateScene')}">
-          <i class="fas fa-map"></i>
-          <span>${game.i18n.localize('UA3E.CreateScene')}</span>
-        </button>
-      </div>
-    `);
+/**
+ * Inject all sidebar buttons at once (for initial load)
+ */
+function injectSidebarButtons() {
+  setTimeout(() => {
+    injectActorButtons();
+    injectItemButtons();
+    injectSceneButtons();
+    injectJournalButtons();
+    injectRollTableButtons();
+    injectCardsButtons();
+    injectPlaylistButtons();
+    injectCompendiumButtons();
+    injectMacroButtons();
+  }, 100);
+}
 
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
+/* ============================================ */
+/*  ACTOR DIRECTORY                             */
+/* ============================================ */
 
-    customButtons.find('[data-action="create-scene"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EScene();
-    });
+function injectActorButtons() {
+  const directory = document.querySelector('#actors .directory');
+  if (!directory) return;
+
+  // Remove existing UA3E buttons to avoid duplicates
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-character" data-action="create-character">
+      <i class="fas fa-user"></i>
+      <span>${game.i18n.localize('UA3E.CreateCharacter')}</span>
+    </button>
+    <button type="button" class="ua3e-btn ua3e-btn-npc" data-action="create-npc">
+      <i class="fas fa-skull"></i>
+      <span>${game.i18n.localize('UA3E.CreateNPC')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-character"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EActor('character');
   });
 
-  /**
-   * Hook into Journal Directory rendering
-   */
-  Hooks.on('renderJournalDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-journal" data-action="create-journal" title="${game.i18n.localize('UA3E.CreateJournal')}">
-          <i class="fas fa-book-open"></i>
-          <span>${game.i18n.localize('UA3E.CreateJournal')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-journal"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EJournal();
-    });
-  });
-
-  /**
-   * Hook into RollTable Directory rendering
-   */
-  Hooks.on('renderRollTableDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-table" data-action="create-table" title="${game.i18n.localize('UA3E.CreateRollTable')}">
-          <i class="fas fa-dice"></i>
-          <span>${game.i18n.localize('UA3E.CreateRollTable')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-table"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3ERollTable();
-    });
-  });
-
-  /**
-   * Hook into Cards Directory rendering
-   */
-  Hooks.on('renderCardsDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-cards" data-action="create-cards" title="${game.i18n.localize('UA3E.CreateCards')}">
-          <i class="fas fa-cards-blank"></i>
-          <span>${game.i18n.localize('UA3E.CreateCards')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-cards"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3ECards();
-    });
-  });
-
-  /**
-   * Hook into Playlist Directory rendering
-   */
-  Hooks.on('renderPlaylistDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-playlist" data-action="create-playlist" title="${game.i18n.localize('UA3E.CreatePlaylist')}">
-          <i class="fas fa-music"></i>
-          <span>${game.i18n.localize('UA3E.CreatePlaylist')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-playlist"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EPlaylist();
-    });
-  });
-
-  /**
-   * Hook into Compendium Directory rendering
-   */
-  Hooks.on('renderCompendiumDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-compendium" data-action="create-compendium" title="${game.i18n.localize('UA3E.CreateCompendium')}">
-          <i class="fas fa-atlas"></i>
-          <span>${game.i18n.localize('UA3E.CreateCompendium')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-compendium');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-compendium"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3ECompendium();
-    });
-  });
-
-  /**
-   * Hook into Macro Directory rendering
-   */
-  Hooks.on('renderMacroDirectory', (app, html, data) => {
-    const headerActions = html.find('.header-actions');
-    if (!headerActions.length) return;
-
-    const customButtons = $(`
-      <div class="ua3e-directory-buttons">
-        <button type="button" class="ua3e-btn ua3e-btn-macro" data-action="create-macro" title="${game.i18n.localize('UA3E.CreateMacro')}">
-          <i class="fas fa-terminal"></i>
-          <span>${game.i18n.localize('UA3E.CreateMacro')}</span>
-        </button>
-      </div>
-    `);
-
-    const createBtn = headerActions.find('button.create-document');
-    if (createBtn.length) {
-      createBtn.after(customButtons);
-    } else {
-      headerActions.append(customButtons);
-    }
-
-    customButtons.find('[data-action="create-macro"]').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      createUA3EMacro();
-    });
+  buttonsContainer.querySelector('[data-action="create-npc"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EActor('npc');
   });
 }
 
-/* -------------------------------------------- */
-/*  Creation Functions                            */
-/* -------------------------------------------- */
+/* ============================================ */
+/*  ITEM DIRECTORY                                */
+/* ============================================ */
 
-/**
- * Create a new Actor with UA3E system
- * @param {string} type - 'character' or 'npc'
- */
+function injectItemButtons() {
+  const directory = document.querySelector('#items .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-identity" data-action="create-identity">
+      <i class="fas fa-id-card"></i>
+      <span>${game.i18n.localize('UA3E.CreateIdentity')}</span>
+    </button>
+    <button type="button" class="ua3e-btn ua3e-btn-equipment" data-action="create-equipment">
+      <i class="fas fa-toolbox"></i>
+      <span>${game.i18n.localize('UA3E.CreateEquipment')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-identity"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EItem('identity');
+  });
+
+  buttonsContainer.querySelector('[data-action="create-equipment"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EItem('equipment');
+  });
+}
+
+/* ============================================ */
+/*  SCENE DIRECTORY                               */
+/* ============================================ */
+
+function injectSceneButtons() {
+  const directory = document.querySelector('#scenes .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-scene" data-action="create-scene">
+      <i class="fas fa-map"></i>
+      <span>${game.i18n.localize('UA3E.CreateScene')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-scene"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EScene();
+  });
+}
+
+/* ============================================ */
+/*  JOURNAL DIRECTORY                             */
+/* ============================================ */
+
+function injectJournalButtons() {
+  const directory = document.querySelector('#journal .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-journal" data-action="create-journal">
+      <i class="fas fa-book-open"></i>
+      <span>${game.i18n.localize('UA3E.CreateJournal')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-journal"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EJournal();
+  });
+}
+
+/* ============================================ */
+/*  ROLL TABLE DIRECTORY                          */
+/* ============================================ */
+
+function injectRollTableButtons() {
+  const directory = document.querySelector('#tables .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-table" data-action="create-table">
+      <i class="fas fa-dice"></i>
+      <span>${game.i18n.localize('UA3E.CreateRollTable')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-table"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3ERollTable();
+  });
+}
+
+/* ============================================ */
+/*  CARDS DIRECTORY                               */
+/* ============================================ */
+
+function injectCardsButtons() {
+  const directory = document.querySelector('#cards .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-cards" data-action="create-cards">
+      <i class="fas fa-cards-blank"></i>
+      <span>${game.i18n.localize('UA3E.CreateCards')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-cards"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3ECards();
+  });
+}
+
+/* ============================================ */
+/*  PLAYLIST DIRECTORY                            */
+/* ============================================ */
+
+function injectPlaylistButtons() {
+  const directory = document.querySelector('#playlists .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-playlist" data-action="create-playlist">
+      <i class="fas fa-music"></i>
+      <span>${game.i18n.localize('UA3E.CreatePlaylist')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-playlist"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EPlaylist();
+  });
+}
+
+/* ============================================ */
+/*  COMPENDIUM DIRECTORY                          */
+/* ============================================ */
+
+function injectCompendiumButtons() {
+  const directory = document.querySelector('#compendium .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-compendium" data-action="create-compendium">
+      <i class="fas fa-atlas"></i>
+      <span>${game.i18n.localize('UA3E.CreateCompendium')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-compendium"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3ECompendium();
+  });
+}
+
+/* ============================================ */
+/*  MACRO DIRECTORY                               */
+/* ============================================ */
+
+function injectMacroButtons() {
+  const directory = document.querySelector('#macros .directory');
+  if (!directory) return;
+
+  directory.querySelectorAll('.ua3e-directory-buttons').forEach(el => el.remove());
+
+  const header = directory.querySelector('.directory-header');
+  if (!header) return;
+
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'ua3e-directory-buttons';
+  buttonsContainer.innerHTML = `
+    <button type="button" class="ua3e-btn ua3e-btn-macro" data-action="create-macro">
+      <i class="fas fa-terminal"></i>
+      <span>${game.i18n.localize('UA3E.CreateMacro')}</span>
+    </button>
+  `;
+
+  header.appendChild(buttonsContainer);
+
+  buttonsContainer.querySelector('[data-action="create-macro"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createUA3EMacro();
+  });
+}
+
+/* ============================================ */
+/*  CREATION FUNCTIONS                            */
+/* ============================================ */
+
 async function createUA3EActor(type) {
   const actorData = {
     name: game.i18n.format('UA3E.NewActor', { type: game.i18n.localize(`UA3E.${type.charAt(0).toUpperCase() + type.slice(1)}`) }),
@@ -327,10 +413,6 @@ async function createUA3EActor(type) {
   }
 }
 
-/**
- * Create a new Item with UA3E system
- * @param {string} type - item type
- */
 async function createUA3EItem(type) {
   const itemData = {
     name: game.i18n.format('UA3E.NewItem', { type: game.i18n.localize(`UA3E.Item${type.charAt(0).toUpperCase() + type.slice(1)}`) }),
@@ -350,20 +432,12 @@ async function createUA3EItem(type) {
   }
 }
 
-/**
- * Create a new Scene
- */
 async function createUA3EScene() {
   const sceneData = {
     name: game.i18n.localize('UA3E.NewScene'),
     width: 3000,
     height: 2000,
-    grid: {
-      type: 1,
-      size: 100,
-      color: '#000000',
-      alpha: 0.2
-    }
+    grid: { type: 1, size: 100, color: '#000000', alpha: 0.2 }
   };
 
   try {
@@ -378,17 +452,10 @@ async function createUA3EScene() {
   }
 }
 
-/**
- * Create a new Journal Entry
- */
 async function createUA3EJournal() {
   const journalData = {
     name: game.i18n.localize('UA3E.NewJournal'),
-    pages: [{
-      name: game.i18n.localize('UA3E.NewPage'),
-      type: 'text',
-      text: { content: '' }
-    }]
+    pages: [{ name: game.i18n.localize('UA3E.NewPage'), type: 'text', text: { content: '' } }]
   };
 
   try {
@@ -403,15 +470,8 @@ async function createUA3EJournal() {
   }
 }
 
-/**
- * Create a new RollTable
- */
 async function createUA3ERollTable() {
-  const tableData = {
-    name: game.i18n.localize('UA3E.NewRollTable'),
-    formula: '1d6',
-    results: []
-  };
+  const tableData = { name: game.i18n.localize('UA3E.NewRollTable'), formula: '1d6', results: [] };
 
   try {
     const table = await RollTable.create(tableData);
@@ -425,14 +485,8 @@ async function createUA3ERollTable() {
   }
 }
 
-/**
- * Create a new Cards stack
- */
 async function createUA3ECards() {
-  const cardsData = {
-    name: game.i18n.localize('UA3E.NewCards'),
-    type: 'deck'
-  };
+  const cardsData = { name: game.i18n.localize('UA3E.NewCards'), type: 'deck' };
 
   try {
     const cards = await Cards.create(cardsData);
@@ -446,15 +500,8 @@ async function createUA3ECards() {
   }
 }
 
-/**
- * Create a new Playlist
- */
 async function createUA3EPlaylist() {
-  const playlistData = {
-    name: game.i18n.localize('UA3E.NewPlaylist'),
-    mode: 'sequential',
-    sounds: []
-  };
+  const playlistData = { name: game.i18n.localize('UA3E.NewPlaylist'), mode: 'sequential', sounds: [] };
 
   try {
     const playlist = await Playlist.create(playlistData);
@@ -468,9 +515,6 @@ async function createUA3EPlaylist() {
   }
 }
 
-/**
- * Create a new Compendium
- */
 async function createUA3ECompendium() {
   const types = ['Actor', 'Item', 'Scene', 'JournalEntry', 'RollTable', 'Macro', 'Cards'];
 
@@ -515,15 +559,8 @@ async function createUA3ECompendium() {
   }).render(true);
 }
 
-/**
- * Create a new Macro
- */
 async function createUA3EMacro() {
-  const macroData = {
-    name: game.i18n.localize('UA3E.NewMacro'),
-    type: 'script',
-    command: ''
-  };
+  const macroData = { name: game.i18n.localize('UA3E.NewMacro'), type: 'script', command: '' };
 
   try {
     const macro = await Macro.create(macroData);

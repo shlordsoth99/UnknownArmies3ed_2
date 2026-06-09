@@ -23,7 +23,7 @@ import { registerCombatHooks, registerCombatSettings } from './apps/combat.mjs';
 /* -------------------------------------------- */
 
 Hooks.once('init', async function() {
-  console.log('Unknown Armies 3E | Initializing system...');
+  console.log('%c Unknown Armies 3E %c | Initializing system...', 'background: #1a1a1a; color: #c9a84c; padding: 4px 8px; border-radius: 4px;', '');
 
   // Add UA3E namespace to global game object
   game.ua3e = {
@@ -64,7 +64,7 @@ Hooks.once('init', async function() {
   // Preload templates
   await preloadHandlebarsTemplates();
 
-  console.log('Unknown Armies 3E | System initialized successfully');
+  console.log('%c Unknown Armies 3E %c | System initialized', 'background: #1a1a1a; color: #c9a84c; padding: 4px 8px; border-radius: 4px;', '');
 });
 
 /* -------------------------------------------- */
@@ -72,9 +72,9 @@ Hooks.once('init', async function() {
 /* -------------------------------------------- */
 
 Hooks.once('ready', async function() {
-  console.log('Unknown Armies 3E | Ready');
+  console.log('%c Unknown Armies 3E %c | Ready', 'background: #1a1a1a; color: #c9a84c; padding: 4px 8px; border-radius: 4px;', '');
 
-  // Register UI hooks
+  // Register UI hooks - MUST be after ready
   registerSidebarHooks();
   registerHotbarHooks();
   registerTokenHUD();
@@ -82,12 +82,12 @@ Hooks.once('ready', async function() {
 
   // Apply stress automation if enabled
   if (game.settings.get('unknown-armies-3e', 'autoStress')) {
-    console.log('Unknown Armies 3E | Automatic stress tracking enabled');
+    console.log('UA3E | Automatic stress tracking enabled');
   }
 
-  // Welcome message
+  // Welcome message for GM
   if (game.user.isGM) {
-    console.log('Unknown Armies 3E | GM detected - full controls available');
+    console.log('UA3E | GM controls loaded');
   }
 });
 
@@ -96,7 +96,6 @@ Hooks.once('ready', async function() {
 /* -------------------------------------------- */
 
 Hooks.on('renderChatMessage', (app, html, data) => {
-  // Add click handlers for stress roll results
   html.find('.ua3e-stress-result').click(async (event) => {
     const actorId = event.currentTarget.dataset.actorId;
     const gauge = event.currentTarget.dataset.gauge;
@@ -108,11 +107,31 @@ Hooks.on('renderChatMessage', (app, html, data) => {
 });
 
 /* -------------------------------------------- */
-/*  Combat Hooks                                  */
+/*  Scene Controls                                */
 /* -------------------------------------------- */
 
 Hooks.on('getSceneControlButtons', (controls) => {
-  // Add UA3E-specific scene controls
+  const tokenTools = controls.find(c => c.name === 'token');
+  if (tokenTools) {
+    tokenTools.tools.push({
+      name: 'ua3e-stress',
+      title: 'UA3E.QuickStressCheck',
+      icon: 'fas fa-brain',
+      visible: game.user.isGM || game.user.isOwner,
+      onClick: () => {
+        const controlled = canvas.tokens.controlled;
+        if (controlled.length === 0) {
+          ui.notifications.warn(game.i18n.localize('UA3E.NoTokensSelected'));
+          return;
+        }
+        // Open stress dialog for selected tokens
+        openQuickStressDialog();
+      },
+      button: true
+    });
+  }
+
+  // Add UA3E-specific controls
   controls.push({
     name: 'ua3e',
     title: 'UA3E.UA3EControls',
@@ -123,28 +142,8 @@ Hooks.on('getSceneControlButtons', (controls) => {
         name: 'stress-check',
         title: 'UA3E.StressCheckTool',
         icon: 'fas fa-brain',
-        onClick: () => {
-          // Open stress check for selected tokens
-          const controlled = canvas.tokens.controlled;
-          if (controlled.length === 0) {
-            ui.notifications.warn(game.i18n.localize('UA3E.NoTokensSelected'));
-            return;
-          }
-          // Delegate to hotbar function
-          import('./apps/hotbar.mjs').then(module => {
-            // The hotbar module will handle this
-          });
-        },
+        onClick: () => openQuickStressDialog(),
         toggle: false
-      },
-      {
-        name: 'reality-anchor',
-        title: 'UA3E.RealityAnchor',
-        icon: 'fas fa-anchor',
-        onClick: () => {
-          // Toggle reality anchor visualization
-        },
-        toggle: true
       }
     ],
     activeTool: ''
@@ -152,36 +151,79 @@ Hooks.on('getSceneControlButtons', (controls) => {
 });
 
 /* -------------------------------------------- */
+/*  Quick Dialog Helper                           */
+/* -------------------------------------------- */
+
+function openQuickStressDialog() {
+  const controlled = canvas.tokens.controlled;
+  if (controlled.length === 0) {
+    ui.notifications.warn(game.i18n.localize('UA3E.NoTokensSelected'));
+    return;
+  }
+
+  const gauges = [
+    { key: 'violence', label: 'UA3E.GaugeViolence' },
+    { key: 'helplessness', label: 'UA3E.GaugeHelplessness' },
+    { key: 'theUnnatural', label: 'UA3E.GaugeUnnatural' },
+    { key: 'isolation', label: 'UA3E.GaugeIsolation' },
+    { key: 'self', label: 'UA3E.GaugeSelf' }
+  ];
+
+  const content = `
+    <form class="ua3e-dialog">
+      <div class="form-group">
+        <label>${game.i18n.localize('UA3E.SelectGauge')}</label>
+        <div class="gauge-buttons">
+          ${gauges.map(g => `
+            <button type="button" class="gauge-select" data-gauge="${g.key}">
+              ${game.i18n.localize(g.label)}
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </form>
+  `;
+
+  const dialog = new Dialog({
+    title: game.i18n.localize('UA3E.StressCheck'),
+    content: content,
+    buttons: {
+      cancel: {
+        icon: '<i class="fas fa-times"></i>',
+        label: game.i18n.localize('UA3E.Cancel')
+      }
+    },
+    render: (html) => {
+      html.find('.gauge-select').click(async (event) => {
+        const gauge = event.currentTarget.dataset.gauge;
+        dialog.close();
+        for (const token of controlled) {
+          const actor = token.actor;
+          if (actor && actor.type === 'character') {
+            await actor.rollStressCheck(gauge);
+          }
+        }
+      });
+    }
+  });
+
+  dialog.render(true);
+}
+
+/* -------------------------------------------- */
 /*  Utility Functions                             */
 /* -------------------------------------------- */
 
-/**
- * Helper to get the current roll mode
- */
 export function getRollMode() {
   return game.settings.get('core', 'rollMode');
 }
 
-/**
- * Helper to create a percentile roll
- * @param {string} formula - The roll formula (e.g., "d%")
- * @param {Object} data - Roll data
- * @param {Object} options - Roll options
- * @returns {Promise<PercentileRoll>}
- */
 export async function rollPercentile(formula, data = {}, options = {}) {
   const roll = new PercentileRoll(formula, data, options);
   await roll.evaluate();
   return roll;
 }
 
-/**
- * Helper to create a stress check roll
- * @param {string} gauge - The stress gauge (violence, helplessness, unnatural, isolation, self)
- * @param {number} hardened - Number of hardened notches
- * @param {Object} options - Roll options
- * @returns {Promise<StressRoll>}
- */
 export async function rollStress(gauge, hardened = 0, options = {}) {
   const roll = new StressRoll(gauge, hardened, options);
   await roll.evaluate();

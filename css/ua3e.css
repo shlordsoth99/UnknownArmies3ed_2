@@ -1848,3 +1848,187 @@
 .sidebar-tab .directory-list .directory-item[data-document-type="equipment"] {
   border-left-color: #4a9b4a;
 }
+
+/* ============================================
+   SIDEBAR DIRECTORY BUTTONS - FVTT 13
+   ============================================ */
+
+/* Container for custom buttons - full width below search */
+.ua3e-directory-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* Individual button styling */
+.ua3e-directory-buttons .ua3e-btn {
+  flex: 1 1 calc(50% - 2px);
+  min-width: 70px;
+  background: var(--color-bg-btn);
+  color: var(--color-text-light-highlight);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  padding: 4px 6px;
+  font-size: 0.75em;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.ua3e-directory-buttons .ua3e-btn:hover {
+  background: var(--color-bg-btn-hover);
+  border-color: var(--color-border-highlight);
+  color: var(--color-text-hyperlink);
+  box-shadow: 0 0 4px rgba(201, 168, 76, 0.3);
+}
+
+.ua3e-directory-buttons .ua3e-btn:active {
+  background: var(--color-bg-btn-active);
+}
+
+.ua3e-directory-buttons .ua3e-btn i {
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+/* Color-coded left borders by type */
+.ua3e-directory-buttons .ua3e-btn-character {
+  border-left: 3px solid #c9a84c;
+}
+
+.ua3e-directory-buttons .ua3e-btn-npc {
+  border-left: 3px solid #8B0000;
+}
+
+.ua3e-directory-buttons .ua3e-btn-identity {
+  border-left: 3px solid #8a6db5;
+}
+
+.ua3e-directory-buttons .ua3e-btn-equipment {
+  border-left: 3px solid #4a9b4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-scene {
+  border-left: 3px solid #4a7c9b;
+}
+
+.ua3e-directory-buttons .ua3e-btn-journal {
+  border-left: 3px solid #9b7c4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-table {
+  border-left: 3px solid #9b4a7c;
+}
+
+.ua3e-directory-buttons .ua3e-btn-cards {
+  border-left: 3px solid #4a9b7c;
+}
+
+.ua3e-directory-buttons .ua3e-btn-playlist {
+  border-left: 3px solid #7c4a9b;
+}
+
+.ua3e-directory-buttons .ua3e-btn-compendium {
+  border-left: 3px solid #9b9b4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-macro {
+  border-left: 3px solid #4a4a9b;
+}
+
+/* ============================================
+   DIRECTORY HEADER - ensure proper layout
+   ============================================ */
+
+.sidebar-tab .directory .directory-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  align-items: center;
+}
+
+.sidebar-tab .directory .directory-header .header-search {
+  flex: 1 1 100%;
+  margin-bottom: 4px;
+}
+
+.sidebar-tab .directory .directory-header .header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  align-items: center;
+}
+
+.sidebar-tab .directory .directory-header button {
+  flex: 0 0 auto;
+}
+
+/* ============================================
+   COLLAPSED SIDEBAR - hide custom buttons
+   ============================================ */
+
+.sidebar-tab.collapsed .ua3e-directory-buttons {
+  display: none;
+}
+
+/* ============================================
+   MOBILE / NARROW SIDEBAR
+   ============================================ */
+
+@media (max-width: 600px) {
+  .ua3e-directory-buttons .ua3e-btn span {
+    display: none;
+  }
+
+  .ua3e-directory-buttons .ua3e-btn {
+    flex: 0 0 36px;
+    padding: 4px;
+    min-width: unset;
+  }
+
+  .ua3e-directory-buttons .ua3e-btn i {
+    margin: 0;
+    font-size: 1.1em;
+  }
+}
+
+/* ============================================
+   DIRECTORY LIST ITEMS - color coding
+   ============================================ */
+
+.sidebar-tab .directory-list .directory-item {
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.sidebar-tab .directory-list .directory-item:hover {
+  background: var(--color-bg-option);
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="character"] {
+  border-left-color: #c9a84c;
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="npc"] {
+  border-left-color: #8B0000;
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="identity"] {
+  border-left-color: #8a6db5;
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="equipment"] {
+  border-left-color: #4a9b4a;
+}
