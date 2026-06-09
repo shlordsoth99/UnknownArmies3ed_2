@@ -48,7 +48,7 @@ Unknown Armies is a roleplaying game of power and consequences. Humanity is the 
 2. Go to **Game Systems** → **Install System**
 3. Paste the manifest URL:
    ```
-   https://raw.githubusercontent.com/patrickbuck1988/unknown-armies-3e/main/system.json
+   https://raw.githubusercontent.com/shlordsoth99/UnknownArmies3ed_2/main/system.json
    ```
 4. Click **Install**
 
@@ -133,13 +133,5 @@ When encountering horror, the GM may call for a Stress Check:
 ## License
 
 This system is released under the MIT License. Unknown Armies is copyright Atlas Games.
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/patrickbuck1988/unknown-armies-3e/issues)
-- **Foundry Discord**: #system-development channel
-- **UA Community**: [Unknown Armies Discord](https://discord.gg/unknownarmies)
-
----
 
 *"Humanity is the only measure of reality."*
