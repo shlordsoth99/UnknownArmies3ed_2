@@ -1,0 +1,32 @@
+<form class="{{#if darkMode}}dark-mode{{/if}} item-sheet" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'UA3E.PowerName'}}" />
+      </h1>
+    </div>
+  </header>
+
+  <div class="sheet-body">
+    <div class="form-group">
+      <label>{{localize 'UA3E.Cost'}}</label>
+      <input type="text" name="system.cost" value="{{system.cost}}" placeholder="{{localize 'UA3E.CostPlaceholder'}}" />
+    </div>
+
+    <div class="form-group">
+      <label>{{localize 'UA3E.Range'}}</label>
+      <input type="text" name="system.range" value="{{system.range}}" placeholder="{{localize 'UA3E.RangePlaceholder'}}" />
+    </div>
+
+    <div class="form-group">
+      <label>{{localize 'UA3E.Duration'}}</label>
+      <input type="text" name="system.duration" value="{{system.duration}}" placeholder="{{localize 'UA3E.DurationPlaceholder'}}" />
+    </div>
+
+    <div class="form-group">
+      <label>{{localize 'UA3E.Description'}}</label>
+      {{editor system.description target="system.description" button=true owner=owner editable=editable}}
+    </div>
+  </div>
+</form>

@@ -1,0 +1,100 @@
+<div class="identity-tab-content">
+  <!-- Attributes Section -->
+  <div class="attributes-section">
+    <h2>{{localize 'UA3E.Attributes'}}</h2>
+    <div class="attributes-grid">
+      {{#each attributes as |attr key|}}
+      <div class="attribute-box" data-attribute="{{key}}">
+        <label class="attribute-label">{{attr.label}}</label>
+        <div class="attribute-value">
+          <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}" min="0" max="100" />
+        </div>
+        <div class="attribute-bar">
+          <div class="attribute-fill" style="width: {{attr.value}}%"></div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Passions Section -->
+  <div class="passions-section">
+    <h2>{{localize 'UA3E.Passions'}}</h2>
+    <div class="passions-list">
+      {{#each passions as |passion key|}}
+      <div class="passion-box passion-{{key}}">
+        <div class="passion-header">
+          <label class="passion-label">{{passion.label}}</label>
+          <span class="passion-hardened">{{localize 'UA3E.Hardened'}}: {{passion.hardened}}</span>
+        </div>
+        <div class="passion-content">
+          <textarea name="system.passions.{{key}}.description" rows="2" placeholder="{{localize 'UA3E.PassionPlaceholder'}}">{{passion.description}}</textarea>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Identities Section -->
+  <div class="identities-section">
+    <div class="section-header">
+      <h2>{{localize 'UA3E.Identities'}}</h2>
+      <button type="button" class="item-create" data-type="identity">
+        <i class="fas fa-plus"></i> {{localize 'UA3E.AddIdentity'}}
+      </button>
+    </div>
+    <div class="identities-list">
+      {{#each identities as |identity|}}
+      <div class="identity-card item" data-item-id="{{identity._id}}">
+        <div class="identity-header">
+          <span class="identity-name">{{identity.name}}</span>
+          <span class="identity-score">{{identity.system.score}}%</span>
+          {{#if identity.system.isObsession}}
+          <span class="obsession-badge">{{localize 'UA3E.Obsession'}}</span>
+          {{/if}}
+        </div>
+        <div class="identity-body">
+          <p class="identity-description">{{identity.system.description}}</p>
+          {{#if identity.system.substitutesFor}}
+          <span class="substitution">{{localize 'UA3E.SubstitutesFor'}}: {{identity.system.substitutionTarget}}</span>
+          {{/if}}
+        </div>
+        <div class="identity-actions">
+          <button type="button" class="identity-roll" title="{{localize 'UA3E.RollIdentity'}}">
+            <i class="fas fa-dice-d20"></i>
+          </button>
+          <button type="button" class="obsession-toggle" title="{{localize 'UA3E.ToggleObsession'}}">
+            <i class="fas fa-fire"></i>
+          </button>
+          <button type="button" class="item-edit" title="{{localize 'UA3E.Edit'}}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="item-delete" title="{{localize 'UA3E.Delete'}}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Relationships Section -->
+  <div class="relationships-section">
+    <div class="section-header">
+      <h2>{{localize 'UA3E.Relationships'}}</h2>
+      <button type="button" class="item-create" data-type="relationship">
+        <i class="fas fa-plus"></i> {{localize 'UA3E.AddRelationship'}}
+      </button>
+    </div>
+    <div class="relationships-list">
+      {{#each relationships as |rel|}}
+      <div class="relationship-item item" data-item-id="{{rel._id}}">
+        <span class="rel-name">{{rel.name}}</span>
+        <span class="rel-score">{{rel.system.score}}%</span>
+        <button type="button" class="item-edit"><i class="fas fa-edit"></i></button>
+        <button type="button" class="item-delete"><i class="fas fa-trash"></i></button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

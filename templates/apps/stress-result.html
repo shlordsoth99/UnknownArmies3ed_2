@@ -1,0 +1,52 @@
+<div class="ua3e-stress-result {{cssClass}}" data-actor-id="{{result.actor}}" data-gauge="{{result.gauge}}">
+  <div class="roll-header">
+    <span class="roll-type">{{localize 'UA3E.StressCheck'}} — {{gauge}}</span>
+    <span class="roll-formula">{{formula}}</span>
+  </div>
+  <div class="roll-body">
+    <div class="roll-total {{#if result.isSuccess}}success{{else}}failure{{/if}}">
+      <span class="roll-value">{{result.total}}</span>
+      <span class="roll-target">/ {{result.target}}</span>
+    </div>
+    <div class="roll-outcome">
+      {{#if (eq result.outcome 'criticalSuccess')}}
+      <span class="outcome critical-success">{{localize 'UA3E.StressCriticalSuccess'}}</span>
+      {{else if (eq result.outcome 'criticalFailure')}}
+      <span class="outcome critical-failure">{{localize 'UA3E.StressCriticalFailure'}}</span>
+      {{else if (eq result.outcome 'matchedSuccess')}}
+      <span class="outcome matched-success">{{localize 'UA3E.StressMatchedSuccess'}}</span>
+      {{else if (eq result.outcome 'matchedFailure')}}
+      <span class="outcome matched-failure">{{localize 'UA3E.StressMatchedFailure'}}</span>
+      {{else if result.isSuccess}}
+      <span class="outcome success">{{localize 'UA3E.StressSuccess'}}</span>
+      {{else}}
+      <span class="outcome failure">{{localize 'UA3E.StressFailure'}}</span>
+      {{/if}}
+    </div>
+    <div class="roll-effect">
+      {{result.effect}}
+    </div>
+  </div>
+  <div class="stress-details">
+    <div class="stress-gauge-info">
+      <span class="gauge-label" style="color: {{gaugeColor result.gauge}}">{{gauge}}</span>
+      <span class="hardened-info">{{localize 'UA3E.Hardened'}}: {{result.hardened}}</span>
+    </div>
+    {{#if result.isSuccess}}
+    <div class="stress-result-success">
+      <i class="fas fa-shield-alt"></i> {{localize 'UA3E.HardenedNotchAdded'}}
+    </div>
+    {{else}}
+    <div class="stress-result-failure">
+      <i class="fas fa-heart-broken"></i> 
+      {{localize 'UA3E.StabilityLost'}}: {{subtract result.stability result.newStability}}
+      {{#if (eq result.outcome 'matchedFailure')}}
+      <br/><i class="fas fa-brain"></i> {{localize 'UA3E.TraumaGained'}}
+      {{/if}}
+      {{#if (eq result.outcome 'criticalFailure')}}
+      <br/><i class="fas fa-exclamation-triangle"></i> {{localize 'UA3E.SevereTraumaGained'}}
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+</div>

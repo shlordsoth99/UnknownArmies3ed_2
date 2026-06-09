@@ -1,0 +1,113 @@
+{
+  "Actor": {
+    "types": ["character", "npc"],
+    "htmlFields": ["biography", "description"],
+    "character": {
+      "identity": {
+        "name": "",
+        "aliases": "",
+        "obsession": "",
+        "description": "",
+        "portrait": ""
+      },
+      "attributes": {
+        "body": { "value": 50, "min": 0, "max": 100 },
+        "speed": { "value": 50, "min": 0, "max": 100 },
+        "mind": { "value": 50, "min": 0, "max": 100 },
+        "soul": { "value": 50, "min": 0, "max": 100 }
+      },
+      "health": { "value": 50, "min": 0, "max": 100, "temp": 0 },
+      "stability": { "value": 50, "min": 0, "max": 100, "temp": 0 },
+      "passions": {
+        "fear": { "description": "", "hardened": 0 },
+        "rage": { "description": "", "hardened": 0 },
+        "noble": { "description": "", "hardened": 0 },
+        "obsession": { "description": "", "hardened": 0 }
+      },
+      "abilities": {
+        "connect": { "value": 15, "label": "UA3E.AbilityConnect" },
+        "knowledge": { "value": 15, "label": "UA3E.AbilityKnowledge" },
+        "lie": { "value": 15, "label": "UA3E.AbilityLie" },
+        "notice": { "value": 15, "label": "UA3E.AbilityNotice" },
+        "pursuit": { "value": 15, "label": "UA3E.AbilityPursuit" },
+        "struggle": { "value": 15, "label": "UA3E.AbilityStruggle" }
+      },
+      "hardenedNotches": { "violence": 0, "helplessness": 0, "theUnnatural": 0, "isolation": 0, "self": 0 },
+      "trauma": [],
+      "relationships": [],
+      "equipment": [],
+      "notes": "",
+      "biography": ""
+    },
+    "npc": {
+      "identity": {
+        "name": "",
+        "description": "",
+        "threatLevel": "medium",
+        "category": ""
+      },
+      "attributes": {
+        "body": { "value": 50, "min": 0, "max": 100 },
+        "speed": { "value": 50, "min": 0, "max": 100 },
+        "mind": { "value": 50, "min": 0, "max": 100 },
+        "soul": { "value": 50, "min": 0, "max": 100 }
+      },
+      "health": { "value": 50, "min": 0, "max": 100 },
+      "stability": { "value": 50, "min": 0, "max": 100 },
+      "abilities": {
+        "connect": { "value": 15 },
+        "knowledge": { "value": 15 },
+        "lie": { "value": 15 },
+        "notice": { "value": 15 },
+        "pursuit": { "value": 15 },
+        "struggle": { "value": 15 }
+      },
+      "hardenedNotches": { "violence": 0, "helplessness": 0, "theUnnatural": 0, "isolation": 0, "self": 0 },
+      "specialPowers": [],
+      "weaknesses": [],
+      "motivation": "",
+      "tactics": "",
+      "woundThreshold": 15,
+      "notes": ""
+    }
+  },
+  "Item": {
+    "types": ["identity", "equipment", "trauma", "relationship", "power"],
+    "htmlFields": ["description"],
+    "identity": {
+      "name": "",
+      "score": 15,
+      "description": "",
+      "isObsession": false,
+      "substitutesFor": ""
+    },
+    "equipment": {
+      "name": "",
+      "quantity": 1,
+      "description": "",
+      "equipped": false,
+      "damage": "",
+      "armor": 0
+    },
+    "trauma": {
+      "name": "",
+      "gauge": "violence",
+      "description": "",
+      "severity": 1,
+      "isPermanent": false
+    },
+    "relationship": {
+      "name": "",
+      "score": 15,
+      "description": "",
+      "isPositive": true
+    },
+    "power": {
+      "name": "",
+      "description": "",
+      "cost": "",
+      "range": "",
+      "duration": ""
+    }
+  }
+}

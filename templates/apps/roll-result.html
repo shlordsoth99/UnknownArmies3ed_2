@@ -1,0 +1,43 @@
+<div class="ua3e-roll-result {{cssClass}}">
+  <div class="roll-header">
+    <span class="roll-type">{{ability}} {{localize 'UA3E.Check'}}</span>
+    <span class="roll-formula">{{formula}}</span>
+  </div>
+  <div class="roll-body">
+    <div class="roll-total {{#if result.isSuccess}}success{{else}}failure{{/if}}">
+      <span class="roll-value">{{total}}</span>
+      <span class="roll-target">/ {{target}}</span>
+    </div>
+    <div class="roll-outcome">
+      {{#if result.isCriticalSuccess}}
+      <span class="outcome critical-success">{{localize 'UA3E.CriticalSuccess'}}</span>
+      {{else if result.isCriticalFailure}}
+      <span class="outcome critical-failure">{{localize 'UA3E.CriticalFailure'}}</span>
+      {{else if result.isMatched}}
+      {{#if result.isSuccess}}
+      <span class="outcome matched-success">{{localize 'UA3E.MatchedSuccess'}}</span>
+      {{else}}
+      <span class="outcome matched-failure">{{localize 'UA3E.MatchedFailure'}}</span>
+      {{/if}}
+      {{else if result.isSuccess}}
+      <span class="outcome success">{{localize 'UA3E.Success'}}</span>
+      {{else}}
+      <span class="outcome failure">{{localize 'UA3E.Failure'}}</span>
+      {{/if}}
+    </div>
+    {{#if result.isMatched}}
+    <div class="roll-matched">
+      <i class="fas fa-equals"></i> {{localize 'UA3E.MatchedRoll'}}
+    </div>
+    {{/if}}
+  </div>
+  <div class="roll-details">
+    <span class="roll-detail">{{localize 'UA3E.Target'}}: {{target}}</span>
+    <span class="roll-detail">{{localize 'UA3E.Roll'}}: {{total}}</span>
+    {{#if result.isSuccess}}
+    <span class="roll-detail">{{localize 'UA3E.Margin'}}: +{{subtract target total}}</span>
+    {{else}}
+    <span class="roll-detail">{{localize 'UA3E.Margin'}}: -{{subtract total target}}</span>
+    {{/if}}
+  </div>
+</div>

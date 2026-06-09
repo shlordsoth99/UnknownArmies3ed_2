@@ -1,0 +1,91 @@
+<div class="stress-tab-content">
+  <div class="stress-header">
+    <h2>{{localize 'UA3E.StressChecks'}}</h2>
+    <div class="stress-info">
+      <p>{{localize 'UA3E.StressInfo'}}</p>
+      <p class="stress-formula">{{localize 'UA3E.StressFormula'}}</p>
+    </div>
+  </div>
+
+  <!-- Hardened Notches -->
+  <div class="hardened-section">
+    <h3>{{localize 'UA3E.HardenedNotches'}}</h3>
+    <div class="hardened-gauges">
+      {{#each hardenedNotches as |gauge key|}}
+      <div class="gauge-box gauge-{{key}} {{#if gauge.isBroken}}broken{{/if}}">
+        <div class="gauge-header">
+          <label class="gauge-label" style="color: {{gaugeColor key}}">{{gauge.label}}</label>
+          <span class="gauge-value">{{gauge.value}}/9</span>
+          {{#if gauge.isBroken}}
+          <span class="broken-badge">{{localize 'UA3E.Broken'}}</span>
+          {{/if}}
+        </div>
+        <div class="gauge-notches">
+          {{#each gauge.notches as |notch|}}
+          <button type="button" 
+                  class="hardened-notch {{#if notch.filled}}filled{{/if}}" 
+                  data-gauge="{{key}}" 
+                  data-notch="{{notch.number}}"
+                  title="{{localize 'UA3E.HardenedNotch'}} {{notch.number}}">
+            {{notch.number}}
+          </button>
+          {{/each}}
+        </div>
+        <button type="button" class="stress-roll" data-gauge="{{key}}">
+          <i class="fas fa-dice-d20"></i> {{localize 'UA3E.RollStressCheck'}}
+        </button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Trauma Section -->
+  <div class="trauma-section">
+    <div class="section-header">
+      <h3>{{localize 'UA3E.Traumas'}}</h3>
+      <button type="button" class="item-create" data-type="trauma">
+        <i class="fas fa-plus"></i> {{localize 'UA3E.AddTrauma'}}
+      </button>
+    </div>
+    {{#if traumas.length}}
+    <div class="trauma-list">
+      {{#each traumas as |trauma|}}
+      <div class="trauma-card item" data-item-id="{{trauma._id}}">
+        <div class="trauma-header">
+          <span class="trauma-name">{{trauma.name}}</span>
+          <span class="trauma-gauge" style="color: {{gaugeColor trauma.system.gauge}}">
+            {{trauma.system.gaugeLabel}}
+          </span>
+          <span class="trauma-severity">{{trauma.system.severityLabel}}</span>
+          {{#if trauma.system.isPermanent}}
+          <span class="permanent-badge">{{localize 'UA3E.Permanent'}}</span>
+          {{/if}}
+        </div>
+        <div class="trauma-description">
+          {{trauma.system.description}}
+        </div>
+        <div class="trauma-actions">
+          <button type="button" class="item-edit"><i class="fas fa-edit"></i></button>
+          <button type="button" class="item-delete"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="no-trauma">{{localize 'UA3E.NoTrauma'}}</p>
+    {{/if}}
+  </div>
+
+  <!-- Broken Status -->
+  {{#if isBroken}}
+  <div class="broken-warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>{{localize 'UA3E.BrokenWarning'}}</span>
+    <div class="broken-gauges">
+      {{#each brokenGauges as |gauge|}}
+      <span class="broken-gauge">{{localize (concat 'UA3E.Gauge' (capitalize gauge))}}</span>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</div>

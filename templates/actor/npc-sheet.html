@@ -1,0 +1,181 @@
+<form class="{{#if darkMode}}dark-mode{{/if}} npc-sheet" autocomplete="off">
+  <!-- Header -->
+  <header class="sheet-header npc-header">
+    <div class="header-left">
+      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    </div>
+    <div class="header-center">
+      <h1 class="npc-name">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'UA3E.Name'}}" />
+      </h1>
+      <div class="npc-meta">
+        <div class="meta-row">
+          <label>{{localize 'UA3E.ThreatLevel'}}:</label>
+          <select name="system.identity.threatLevel" class="threat-select" style="border-color: {{threatColor system.identity.threatLevel}}">
+            {{#each threatLevels as |label key|}}
+            <option value="{{key}}" {{#if (eq ../system.identity.threatLevel key)}}selected{{/if}}>{{localize label}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="meta-row">
+          <label>{{localize 'UA3E.Category'}}:</label>
+          <input type="text" name="system.identity.category" value="{{system.identity.category}}" placeholder="{{localize 'UA3E.CategoryPlaceholder'}}" />
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="health-block">
+        <label>{{localize 'UA3E.Health'}}</label>
+        <div class="health-display">
+          <button type="button" class="health-adjust" data-adjust="-5">-</button>
+          <span class="health-value">{{health.value}}</span>
+          <span class="health-separator">/</span>
+          <span class="health-max">{{health.max}}</span>
+          <button type="button" class="health-adjust" data-adjust="5">+</button>
+        </div>
+        <div class="health-bar">
+          <div class="health-fill" style="width: {{percentage health.value health.max}}%"></div>
+        </div>
+      </div>
+      <div class="stability-block">
+        <label>{{localize 'UA3E.Stability'}}</label>
+        <div class="stability-display">
+          <button type="button" class="stability-adjust" data-adjust="-5">-</button>
+          <span class="stability-value">{{stability.value}}</span>
+          <span class="stability-separator">/</span>
+          <span class="stability-max">{{stability.max}}</span>
+          <button type="button" class="stability-adjust" data-adjust="5">+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="stats">{{localize 'UA3E.TabStats'}}</a>
+    <a class="item" data-tab="abilities">{{localize 'UA3E.TabAbilities'}}</a>
+    <a class="item" data-tab="powers">{{localize 'UA3E.TabPowers'}}</a>
+    <a class="item" data-tab="tactics">{{localize 'UA3E.TabTactics'}}</a>
+  </nav>
+
+  <!-- Body -->
+  <section class="sheet-body">
+
+    <!-- Stats Tab -->
+    <div class="tab stats-tab" data-group="primary" data-tab="stats">
+      <div class="npc-stats">
+        <!-- Attributes -->
+        <div class="attributes-section">
+          <h2>{{localize 'UA3E.Attributes'}}</h2>
+          <div class="attributes-grid">
+            {{#each attributes as |attr key|}}
+            <div class="attribute-box" data-attribute="{{key}}">
+              <label class="attribute-label">{{attr.label}}</label>
+              <div class="attribute-value">
+                <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}" min="0" max="100" />
+              </div>
+              <div class="attribute-bar">
+                <div class="attribute-fill" style="width: {{attr.value}}%"></div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <!-- Wound Threshold -->
+        <div class="wound-section">
+          <label>{{localize 'UA3E.WoundThreshold'}}:</label>
+          <input type="number" name="system.woundThreshold" value="{{woundThreshold}}" min="1" />
+        </div>
+
+        <!-- Hardened Notches -->
+        <div class="hardened-section">
+          <h3>{{localize 'UA3E.HardenedNotches'}}</h3>
+          <div class="hardened-gauges compact">
+            {{#each hardenedNotches as |value key|}}
+            <div class="gauge-compact">
+              <label style="color: {{gaugeColor key}}">{{localize (concat 'UA3E.Gauge' (capitalize key))}}</label>
+              <input type="number" name="system.hardenedNotches.{{key}}" value="{{value}}" min="0" max="9" />
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description-section">
+          <h3>{{localize 'UA3E.Description'}}</h3>
+          <textarea name="system.identity.description" rows="6">{{system.identity.description}}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abilities Tab -->
+    <div class="tab abilities-tab" data-group="primary" data-tab="abilities">
+      <div class="abilities-grid">
+        {{#each abilities as |ability key|}}
+        <div class="ability-card" data-ability="{{key}}">
+          <div class="ability-header">
+            <span class="ability-name">{{ability.label}}</span>
+          </div>
+          <div class="ability-body">
+            <div class="ability-value">
+              <input type="number" name="system.abilities.{{key}}.value" value="{{ability.value}}" min="0" max="100" />
+              <span class="ability-percent">%</span>
+            </div>
+            <button type="button" class="ability-roll" data-ability="{{key}}" title="{{localize 'UA3E.RollAbility'}}">
+              <i class="fas fa-dice-d20"></i>
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Powers Tab -->
+    <div class="tab powers-tab" data-group="primary" data-tab="powers">
+      <div class="powers-section">
+        <h2>{{localize 'UA3E.SpecialPowers'}}</h2>
+        <button type="button" class="power-add">
+          <i class="fas fa-plus"></i> {{localize 'UA3E.AddPower'}}
+        </button>
+
+        {{#each specialPowers as |power index|}}
+        <div class="power-card" data-index="{{index}}">
+          <div class="power-header">
+            <input type="text" class="inline-edit" data-field="system.specialPowers.{{index}}.name" value="{{power.name}}" placeholder="{{localize 'UA3E.PowerName'}}" />
+            <button type="button" class="power-delete" data-index="{{index}}"><i class="fas fa-trash"></i></button>
+          </div>
+          <textarea class="inline-edit" data-field="system.specialPowers.{{index}}.description" rows="3" placeholder="{{localize 'UA3E.PowerDescription'}}">{{power.description}}</textarea>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="weaknesses-section">
+        <h2>{{localize 'UA3E.Weaknesses'}}</h2>
+        <button type="button" class="weakness-add">
+          <i class="fas fa-plus"></i> {{localize 'UA3E.AddWeakness'}}
+        </button>
+
+        {{#each weaknesses as |weakness index|}}
+        <div class="weakness-item" data-index="{{index}}">
+          <input type="text" class="inline-edit" data-field="system.weaknesses.{{index}}" value="{{weakness}}" />
+          <button type="button" class="weakness-delete" data-index="{{index}}"><i class="fas fa-trash"></i></button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Tactics Tab -->
+    <div class="tab tactics-tab" data-group="primary" data-tab="tactics">
+      <div class="tactics-section">
+        <h2>{{localize 'UA3E.Motivation'}}</h2>
+        <textarea name="system.motivation" rows="4" placeholder="{{localize 'UA3E.MotivationPlaceholder'}}">{{motivation}}</textarea>
+      </div>
+
+      <div class="tactics-section">
+        <h2>{{localize 'UA3E.Tactics'}}</h2>
+        <textarea name="system.tactics" rows="6" placeholder="{{localize 'UA3E.TacticsPlaceholder'}}">{{tactics}}</textarea>
+      </div>
+    </div>
+  </section>
+</form>

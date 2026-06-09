@@ -1,0 +1,1850 @@
+/**
+ * Unknown Armies 3rd Edition - Foundry VTT System Styles
+ * Dark, gritty, occult aesthetic
+ */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+
+:root {
+  --ua3e-bg-primary: #1a1a1a;
+  --ua3e-bg-secondary: #252525;
+  --ua3e-bg-tertiary: #333333;
+  --ua3e-bg-hover: #3a3a3a;
+  --ua3e-bg-input: #2a2a2a;
+
+  --ua3e-text-primary: #e0e0e0;
+  --ua3e-text-secondary: #b0b0b0;
+  --ua3e-text-muted: #808080;
+  --ua3e-text-accent: #c9a84c;
+
+  --ua3e-border-color: #444444;
+  --ua3e-border-light: #555555;
+
+  --ua3e-success: #4a9b4a;
+  --ua3e-success-light: #5ab85a;
+  --ua3e-failure: #9b4a4a;
+  --ua3e-failure-light: #b85a5a;
+  --ua3e-critical: #c9a84c;
+  --ua3e-matched: #8a6db5;
+
+  --ua3e-gauge-violence: #8B0000;
+  --ua3e-gauge-helplessness: #4B0082;
+  --ua3e-gauge-unnatural: #006400;
+  --ua3e-gauge-isolation: #8B4513;
+  --ua3e-gauge-self: #2F4F4F;
+
+  --ua3e-font-header: 'Cinzel', 'Georgia', serif;
+  --ua3e-font-body: 'Roboto', 'Arial', sans-serif;
+
+  --ua3e-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --ua3e-shadow-heavy: 0 4px 16px rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================
+   GLOBAL SHEET STYLES
+   ============================================ */
+
+.ua3e.sheet {
+  font-family: var(--ua3e-font-body);
+  color: var(--ua3e-text-primary);
+  background: var(--ua3e-bg-primary);
+}
+
+.ua3e.sheet form {
+  background: var(--ua3e-bg-primary);
+}
+
+.ua3e.sheet input,
+.ua3e.sheet textarea,
+.ua3e.sheet select {
+  background: var(--ua3e-bg-input);
+  color: var(--ua3e-text-primary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-family: var(--ua3e-font-body);
+}
+
+.ua3e.sheet input:focus,
+.ua3e.sheet textarea:focus,
+.ua3e.sheet select:focus {
+  border-color: var(--ua3e-text-accent);
+  box-shadow: 0 0 4px rgba(201, 168, 76, 0.3);
+  outline: none;
+}
+
+.ua3e.sheet button {
+  background: var(--ua3e-bg-tertiary);
+  color: var(--ua3e-text-primary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 3px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ua3e.sheet button:hover {
+  background: var(--ua3e-bg-hover);
+  border-color: var(--ua3e-text-accent);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet h1,
+.ua3e.sheet h2,
+.ua3e.sheet h3 {
+  font-family: var(--ua3e-font-header);
+  color: var(--ua3e-text-accent);
+  border-bottom: 1px solid var(--ua3e-border-color);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   SHEET HEADER
+   ============================================ */
+
+.ua3e.sheet .sheet-header {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--ua3e-bg-secondary);
+  border-bottom: 2px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.ua3e.sheet .profile-img:hover {
+  border-color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua3e.sheet .charname input {
+  font-family: var(--ua3e-font-header);
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--ua3e-text-accent);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--ua3e-border-color);
+  width: 100%;
+}
+
+.ua3e.sheet .charname input:focus {
+  border-bottom-color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .identity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ua3e.sheet .info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ua3e.sheet .info-row label {
+  font-size: 0.85em;
+  color: var(--ua3e-text-muted);
+  min-width: 80px;
+}
+
+.ua3e.sheet .info-row input {
+  flex: 1;
+  font-size: 0.9em;
+}
+
+.ua3e.sheet .obsession-row {
+  background: rgba(201, 168, 76, 0.1);
+  padding: 4px;
+  border-radius: 3px;
+  border-left: 3px solid var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .obsession-tag {
+  font-size: 0.7em;
+  color: var(--ua3e-text-accent);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   HEALTH & STABILITY BLOCKS
+   ============================================ */
+
+.ua3e.sheet .header-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.ua3e.sheet .health-block,
+.ua3e.sheet .stability-block {
+  background: var(--ua3e-bg-tertiary);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .health-block label,
+.ua3e.sheet .stability-block label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.ua3e.sheet .health-display,
+.ua3e.sheet .stability-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.ua3e.sheet .health-value,
+.ua3e.sheet .stability-value {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: var(--ua3e-text-primary);
+  min-width: 30px;
+  text-align: center;
+}
+
+.ua3e.sheet .health-separator,
+.ua3e.sheet .stability-separator {
+  color: var(--ua3e-text-muted);
+}
+
+.ua3e.sheet .health-max,
+.ua3e.sheet .stability-max {
+  font-size: 1em;
+  color: var(--ua3e-text-secondary);
+}
+
+.ua3e.sheet .health-adjust,
+.ua3e.sheet .stability-adjust {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+.ua3e.sheet .health-bar,
+.ua3e.sheet .stability-bar {
+  height: 6px;
+  background: var(--ua3e-bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ua3e.sheet .health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8B0000, #c9a84c);
+  transition: width 0.3s ease;
+}
+
+.ua3e.sheet .stability-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4B0082, #8a6db5);
+  transition: width 0.3s ease;
+}
+
+.ua3e.sheet .wound-threshold {
+  font-size: 0.75em;
+  color: var(--ua3e-text-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.ua3e.sheet .sheet-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--ua3e-bg-secondary);
+  border-bottom: 2px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .sheet-tabs .item {
+  padding: 8px 16px;
+  color: var(--ua3e-text-secondary);
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.ua3e.sheet .sheet-tabs .item:hover {
+  color: var(--ua3e-text-primary);
+  background: var(--ua3e-bg-hover);
+}
+
+.ua3e.sheet .sheet-tabs .item.active {
+  color: var(--ua3e-text-accent);
+  border-bottom-color: var(--ua3e-text-accent);
+  background: var(--ua3e-bg-tertiary);
+}
+
+/* ============================================
+   SHEET BODY
+   ============================================ */
+
+.ua3e.sheet .sheet-body {
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.ua3e.sheet .tab {
+  display: none;
+}
+
+.ua3e.sheet .tab.active {
+  display: block;
+}
+
+/* ============================================
+   ATTRIBUTES
+   ============================================ */
+
+.ua3e.sheet .attributes-section {
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.ua3e.sheet .attribute-box {
+  background: var(--ua3e-bg-secondary);
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--ua3e-border-color);
+  text-align: center;
+}
+
+.ua3e.sheet .attribute-label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .attribute-value input {
+  width: 60px;
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+  background: var(--ua3e-bg-input);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.ua3e.sheet .attribute-bar {
+  height: 4px;
+  background: var(--ua3e-bg-primary);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.ua3e.sheet .attribute-fill {
+  height: 100%;
+  background: var(--ua3e-text-accent);
+  transition: width 0.3s ease;
+}
+
+/* ============================================
+   PASSIONS
+   ============================================ */
+
+.ua3e.sheet .passions-section {
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .passions-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.ua3e.sheet .passion-box {
+  background: var(--ua3e-bg-secondary);
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .passion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .passion-label {
+  font-family: var(--ua3e-font-header);
+  font-size: 0.9em;
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .passion-hardened {
+  font-size: 0.75em;
+  color: var(--ua3e-text-muted);
+}
+
+.ua3e.sheet .passion-box textarea {
+  width: 100%;
+  min-height: 40px;
+  resize: vertical;
+  font-size: 0.85em;
+}
+
+.ua3e.sheet .passion-fear { border-left: 3px solid var(--ua3e-gauge-violence); }
+.ua3e.sheet .passion-rage { border-left: 3px solid #c9a84c; }
+.ua3e.sheet .passion-noble { border-left: 3px solid var(--ua3e-gauge-unnatural); }
+.ua3e.sheet .passion-obsession { border-left: 3px solid var(--ua3e-gauge-helplessness); }
+
+/* ============================================
+   IDENTITIES
+   ============================================ */
+
+.ua3e.sheet .identities-section,
+.ua3e.sheet .relationships-section,
+.ua3e.sheet .equipment-section {
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .section-header h2 {
+  margin: 0;
+  border: none;
+}
+
+.ua3e.sheet .section-header button {
+  font-size: 0.8em;
+  padding: 4px 8px;
+}
+
+.ua3e.sheet .identities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua3e.sheet .identity-card {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.ua3e.sheet .identity-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .identity-name {
+  font-weight: bold;
+  color: var(--ua3e-text-primary);
+  flex: 1;
+}
+
+.ua3e.sheet .identity-score {
+  font-size: 1.1em;
+  color: var(--ua3e-text-accent);
+  font-weight: bold;
+}
+
+.ua3e.sheet .obsession-badge {
+  background: rgba(201, 168, 76, 0.2);
+  color: var(--ua3e-text-accent);
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ua3e.sheet .identity-body {
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .identity-description {
+  font-size: 0.85em;
+  color: var(--ua3e-text-secondary);
+  margin: 0;
+}
+
+.ua3e.sheet .substitution {
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  font-style: italic;
+}
+
+.ua3e.sheet .identity-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ua3e.sheet .identity-actions button {
+  padding: 4px 8px;
+  font-size: 0.8em;
+}
+
+/* ============================================
+   ABILITIES
+   ============================================ */
+
+.ua3e.sheet .abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .ability-card {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 12px;
+  text-align: center;
+}
+
+.ua3e.sheet .ability-header {
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .ability-name {
+  display: block;
+  font-family: var(--ua3e-font-header);
+  font-size: 0.9em;
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .ability-abbr {
+  font-size: 0.75em;
+  color: var(--ua3e-text-muted);
+}
+
+.ua3e.sheet .ability-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ua3e.sheet .ability-value {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ua3e.sheet .ability-value input {
+  width: 50px;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.ua3e.sheet .ability-percent {
+  color: var(--ua3e-text-muted);
+}
+
+.ua3e.sheet .ability-roll {
+  padding: 6px 10px;
+}
+
+.ua3e.sheet .ability-bar {
+  height: 4px;
+  background: var(--ua3e-bg-primary);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.ua3e.sheet .ability-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ua3e-gauge-violence), var(--ua3e-text-accent));
+  transition: width 0.3s ease;
+}
+
+.ua3e.sheet .abilities-info {
+  background: var(--ua3e-bg-secondary);
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .abilities-info dl {
+  margin: 0;
+}
+
+.ua3e.sheet .abilities-info dt {
+  font-weight: bold;
+  color: var(--ua3e-text-accent);
+  margin-top: 8px;
+}
+
+.ua3e.sheet .abilities-info dd {
+  margin-left: 0;
+  color: var(--ua3e-text-secondary);
+  font-size: 0.9em;
+}
+
+/* ============================================
+   STRESS & HARDENED NOTCHES
+   ============================================ */
+
+.ua3e.sheet .stress-header {
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .stress-info {
+  background: var(--ua3e-bg-secondary);
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 3px solid var(--ua3e-gauge-helplessness);
+}
+
+.ua3e.sheet .stress-info p {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--ua3e-text-secondary);
+}
+
+.ua3e.sheet .stress-formula {
+  font-family: monospace;
+  color: var(--ua3e-text-accent);
+  margin-top: 4px;
+}
+
+.ua3e.sheet .hardened-gauges {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 12px;
+}
+
+.ua3e.sheet .gauge-box {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.ua3e.sheet .gauge-box.broken {
+  border-color: var(--ua3e-failure);
+  background: rgba(155, 74, 74, 0.1);
+}
+
+.ua3e.sheet .gauge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .gauge-label {
+  font-family: var(--ua3e-font-header);
+  font-size: 1em;
+  flex: 1;
+}
+
+.ua3e.sheet .gauge-value {
+  font-size: 0.9em;
+  color: var(--ua3e-text-secondary);
+}
+
+.ua3e.sheet .broken-badge {
+  background: var(--ua3e-failure);
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ua3e.sheet .gauge-notches {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .hardened-notch {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ua3e-border-color);
+  background: var(--ua3e-bg-primary);
+  color: var(--ua3e-text-muted);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.ua3e.sheet .hardened-notch:hover {
+  border-color: var(--ua3e-text-accent);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .hardened-notch.filled {
+  background: var(--ua3e-text-accent);
+  color: var(--ua3e-bg-primary);
+  border-color: var(--ua3e-text-accent);
+}
+
+.ua3e.sheet .stress-roll {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ============================================
+   TRAUMA
+   ============================================ */
+
+.ua3e.sheet .trauma-section {
+  margin-top: 16px;
+}
+
+.ua3e.sheet .trauma-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua3e.sheet .trauma-card {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.ua3e.sheet .trauma-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.ua3e.sheet .trauma-name {
+  font-weight: bold;
+  color: var(--ua3e-text-primary);
+}
+
+.ua3e.sheet .trauma-gauge {
+  font-size: 0.8em;
+}
+
+.ua3e.sheet .trauma-severity {
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--ua3e-bg-tertiary);
+}
+
+.ua3e.sheet .permanent-badge {
+  background: var(--ua3e-failure);
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.ua3e.sheet .trauma-description {
+  font-size: 0.85em;
+  color: var(--ua3e-text-secondary);
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .trauma-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ua3e.sheet .no-trauma {
+  color: var(--ua3e-text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* ============================================
+   BROKEN WARNING
+   ============================================ */
+
+.ua3e.sheet .broken-warning {
+  background: rgba(155, 74, 74, 0.2);
+  border: 2px solid var(--ua3e-failure);
+  border-radius: 4px;
+  padding: 12px;
+  margin-top: 16px;
+  text-align: center;
+  color: var(--ua3e-failure-light);
+}
+
+.ua3e.sheet .broken-warning i {
+  margin-right: 8px;
+}
+
+.ua3e.sheet .broken-gauges {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.ua3e.sheet .broken-gauge {
+  background: var(--ua3e-failure);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
+
+/* ============================================
+   EQUIPMENT
+   ============================================ */
+
+.ua3e.sheet .equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua3e.sheet .equipment-card {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.ua3e.sheet .equipment-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .equipment-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.ua3e.sheet .equipment-quantity {
+  color: var(--ua3e-text-muted);
+  font-size: 0.9em;
+}
+
+.ua3e.sheet .equipped-badge {
+  background: var(--ua3e-success);
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.ua3e.sheet .equipment-body {
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .equipment-description {
+  font-size: 0.85em;
+  color: var(--ua3e-text-secondary);
+  margin: 0 0 4px 0;
+}
+
+.ua3e.sheet .equipment-damage,
+.ua3e.sheet .equipment-armor {
+  font-size: 0.8em;
+  margin-right: 8px;
+}
+
+.ua3e.sheet .equipment-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ua3e.sheet .no-equipment {
+  color: var(--ua3e-text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* ============================================
+   RELATIONSHIPS
+   ============================================ */
+
+.ua3e.sheet .relationships-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ua3e.sheet .relationship-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ua3e-bg-secondary);
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e.sheet .rel-name {
+  flex: 1;
+}
+
+.ua3e.sheet .rel-score {
+  color: var(--ua3e-text-accent);
+  font-weight: bold;
+}
+
+/* ============================================
+   ROLL RESULTS
+   ============================================ */
+
+.ua3e-roll-result,
+.ua3e-stress-result {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 12px;
+  margin: 4px 0;
+}
+
+.ua3e-roll-result .roll-header,
+.ua3e-stress-result .roll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ua3e-border-color);
+  padding-bottom: 4px;
+}
+
+.ua3e-roll-result .roll-type,
+.ua3e-stress-result .roll-type {
+  font-family: var(--ua3e-font-header);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e-roll-result .roll-formula,
+.ua3e-stress-result .roll-formula {
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  font-family: monospace;
+}
+
+.ua3e-roll-result .roll-body,
+.ua3e-stress-result .roll-body {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.ua3e-roll-result .roll-total,
+.ua3e-stress-result .roll-total {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.ua3e-roll-result .roll-total.success,
+.ua3e-stress-result .roll-total.success {
+  color: var(--ua3e-success);
+}
+
+.ua3e-roll-result .roll-total.failure,
+.ua3e-stress-result .roll-total.failure {
+  color: var(--ua3e-failure);
+}
+
+.ua3e-roll-result .roll-target,
+.ua3e-stress-result .roll-target {
+  font-size: 0.6em;
+  color: var(--ua3e-text-muted);
+}
+
+.ua3e-roll-result .roll-outcome,
+.ua3e-stress-result .roll-outcome {
+  margin-top: 4px;
+}
+
+.ua3e-roll-result .outcome,
+.ua3e-stress-result .outcome {
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ua3e-roll-result .outcome.success,
+.ua3e-stress-result .outcome.success {
+  background: rgba(74, 155, 74, 0.2);
+  color: var(--ua3e-success-light);
+}
+
+.ua3e-roll-result .outcome.failure,
+.ua3e-stress-result .outcome.failure {
+  background: rgba(155, 74, 74, 0.2);
+  color: var(--ua3e-failure-light);
+}
+
+.ua3e-roll-result .outcome.critical-success,
+.ua3e-stress-result .outcome.critical-success {
+  background: rgba(201, 168, 76, 0.2);
+  color: var(--ua3e-critical);
+}
+
+.ua3e-roll-result .outcome.critical-failure,
+.ua3e-stress-result .outcome.critical-failure {
+  background: rgba(139, 0, 0, 0.3);
+  color: #ff6b6b;
+}
+
+.ua3e-roll-result .outcome.matched-success,
+.ua3e-stress-result .outcome.matched-success {
+  background: rgba(138, 109, 181, 0.2);
+  color: #a88fd4;
+}
+
+.ua3e-roll-result .outcome.matched-failure,
+.ua3e-stress-result .outcome.matched-failure {
+  background: rgba(138, 109, 181, 0.2);
+  color: #d4a88f;
+}
+
+.ua3e-roll-result .roll-matched {
+  margin-top: 4px;
+  color: var(--ua3e-matched);
+  font-size: 0.85em;
+}
+
+.ua3e-roll-result .roll-details,
+.ua3e-stress-result .stress-details {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  border-top: 1px solid var(--ua3e-border-color);
+  padding-top: 4px;
+}
+
+.ua3e-stress-result .stress-gauge-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ua3e-stress-result .stress-result-success,
+.ua3e-stress-result .stress-result-failure {
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.ua3e-stress-result .stress-result-success {
+  background: rgba(74, 155, 74, 0.1);
+  color: var(--ua3e-success-light);
+}
+
+.ua3e-stress-result .stress-result-failure {
+  background: rgba(155, 74, 74, 0.1);
+  color: var(--ua3e-failure-light);
+}
+
+/* ============================================
+   NPC SHEET SPECIFIC
+   ============================================ */
+
+.ua3e.sheet.npc-sheet .npc-header {
+  background: linear-gradient(135deg, var(--ua3e-bg-secondary), rgba(139, 0, 0, 0.1));
+}
+
+.ua3e.sheet .threat-select {
+  font-weight: bold;
+}
+
+.ua3e.sheet .powers-section,
+.ua3e.sheet .weaknesses-section {
+  margin-bottom: 16px;
+}
+
+.ua3e.sheet .power-card,
+.ua3e.sheet .weakness-item {
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.ua3e.sheet .power-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ua3e.sheet .power-header input {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.ua3e.sheet .gauge-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ua3e-bg-secondary);
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+.ua3e.sheet .gauge-compact label {
+  flex: 1;
+  font-size: 0.85em;
+}
+
+.ua3e.sheet .gauge-compact input {
+  width: 50px;
+  text-align: center;
+}
+
+/* ============================================
+   ITEM SHEETS
+   ============================================ */
+
+.ua3e.sheet.item-sheet {
+  min-height: 400px;
+}
+
+.ua3e.sheet.item-sheet .sheet-header {
+  padding: 8px;
+}
+
+.ua3e.sheet.item-sheet .profile-img {
+  width: 60px;
+  height: 60px;
+}
+
+.ua3e.sheet.item-sheet .sheet-body {
+  padding: 12px;
+}
+
+.ua3e.sheet.item-sheet .form-group {
+  margin-bottom: 12px;
+}
+
+.ua3e.sheet.item-sheet .form-group label {
+  display: block;
+  font-size: 0.85em;
+  color: var(--ua3e-text-muted);
+  margin-bottom: 4px;
+}
+
+.ua3e.sheet.item-sheet .form-group .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ua3e-text-primary);
+}
+
+.ua3e.sheet.item-sheet .form-group .checkbox input {
+  width: auto;
+}
+
+.ua3e.sheet.item-sheet .form-fields {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ua3e.sheet.item-sheet .form-actions {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ============================================
+   SCROLLBARS
+   ============================================ */
+
+.ua3e.sheet ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ua3e.sheet ::-webkit-scrollbar-track {
+  background: var(--ua3e-bg-primary);
+}
+
+.ua3e.sheet ::-webkit-scrollbar-thumb {
+  background: var(--ua3e-border-color);
+  border-radius: 4px;
+}
+
+.ua3e.sheet ::-webkit-scrollbar-thumb:hover {
+  background: var(--ua3e-border-light);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes pulse-accent {
+  0%, 100% { box-shadow: 0 0 4px rgba(201, 168, 76, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(201, 168, 76, 0.6); }
+}
+
+.ua3e.sheet .obsession-badge {
+  animation: pulse-accent 3s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.ua3e.sheet .broken-warning {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 600px) {
+  .ua3e.sheet .attributes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ua3e.sheet .abilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ua3e.sheet .passions-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ua3e.sheet .sheet-header {
+    flex-direction: column;
+  }
+
+  .ua3e.sheet .header-right {
+    flex-direction: row;
+    min-width: auto;
+  }
+}
+
+/* ============================================
+   TOKEN STYLES
+   ============================================ */
+
+.ua3e-token .token-name {
+  font-family: var(--ua3e-font-header);
+}
+
+.ua3e-token .bar1 {
+  background: linear-gradient(90deg, #8B0000, #c9a84c);
+}
+
+.ua3e-token .bar2 {
+  background: linear-gradient(90deg, #4B0082, #8a6db5);
+}
+
+/* ============================================
+   SIDEBAR BUTTONS
+   ============================================ */
+
+.ua3e .create-entity {
+  background: var(--ua3e-bg-tertiary);
+  color: var(--ua3e-text-primary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 4px;
+}
+
+.ua3e .create-entity:hover {
+  background: var(--ua3e-bg-hover);
+  border-color: var(--ua3e-text-accent);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e .create-entity i {
+  margin-right: 4px;
+}
+
+/* ============================================
+   TOKEN HUD
+   ============================================ */
+
+.ua3e-token-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ua3e-token-actions .control-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--ua3e-text-secondary);
+}
+
+.ua3e-token-actions .control-icon:hover {
+  background: var(--ua3e-bg-hover);
+  border-color: var(--ua3e-text-accent);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e-token-resources {
+  margin-top: 8px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e-token-resources .resource-bar {
+  height: 16px;
+  background: var(--ua3e-bg-primary);
+  border-radius: 3px;
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ua3e-token-resources .resource-bar:last-child {
+  margin-bottom: 0;
+}
+
+.ua3e-token-resources .resource-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.ua3e-token-resources .health-bar-hud .resource-fill {
+  background: linear-gradient(90deg, #8B0000, #c9a84c);
+}
+
+.ua3e-token-resources .stability-bar-hud .resource-fill {
+  background: linear-gradient(90deg, #4B0082, #8a6db5);
+}
+
+.ua3e-token-resources .resource-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7em;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+/* ============================================
+   COMBAT TRACKER
+   ============================================ */
+
+.ua3e-combat-resources {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.ua3e-combat-resources .combat-health,
+.ua3e-combat-resources .combat-stability {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+  color: var(--ua3e-text-secondary);
+}
+
+.ua3e-combat-resources .combat-health i {
+  color: #c9a84c;
+}
+
+.ua3e-combat-resources .combat-stability i {
+  color: #8a6db5;
+}
+
+.ua3e-combat-resources .health-value.critical,
+.ua3e-combat-resources .stability-value.critical {
+  color: var(--ua3e-failure);
+  font-weight: bold;
+}
+
+.combat-stress-btn {
+  background: transparent;
+  border: none;
+  color: var(--ua3e-text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.2s;
+}
+
+.combat-stress-btn:hover {
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e-round-flavor {
+  display: block;
+  font-size: 0.8em;
+  color: var(--ua3e-text-muted);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* ============================================
+   DIALOGS
+   ============================================ */
+
+.ua3e-dialog .form-group {
+  margin-bottom: 12px;
+}
+
+.ua3e-dialog .form-group label {
+  display: block;
+  font-size: 0.9em;
+  color: var(--ua3e-text-secondary);
+  margin-bottom: 4px;
+}
+
+.ua3e-dialog .gauge-buttons {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 4px;
+}
+
+.ua3e-dialog .gauge-buttons button {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--ua3e-bg-secondary);
+  border: 1px solid var(--ua3e-border-color);
+  color: var(--ua3e-text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ua3e-dialog .gauge-buttons button:hover {
+  background: var(--ua3e-bg-hover);
+  border-color: var(--ua3e-text-accent);
+}
+
+.ua3e-dialog .token-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ua3e-dialog .token-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--ua3e-bg-secondary);
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e-dialog .token-item img {
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+/* ============================================
+   SCENE CONTROLS
+   ============================================ */
+
+.scene-control[data-control="ua3e"] {
+  background: linear-gradient(135deg, #1a1a1a, #2a1a1a);
+}
+
+.scene-control[data-control="ua3e"].active {
+  background: linear-gradient(135deg, #2a1a1a, #3a1a1a);
+  border-color: var(--ua3e-text-accent);
+}
+
+.control-tool[data-tool="stress-check"] {
+  color: #8a6db5;
+}
+
+.control-tool[data-tool="reality-anchor"] {
+  color: #c9a84c;
+}
+
+.control-tool[data-tool="obsession-mode"] {
+  color: #ff6b6b;
+}
+
+/* ============================================
+   HOTBAR
+   ============================================ */
+
+.ua3e-empty-slot {
+  position: relative;
+}
+
+.ua3e-empty-slot::after {
+  content: '+';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--ua3e-text-muted);
+  font-size: 1.2em;
+  opacity: 0.3;
+}
+
+/* ============================================
+   COMPENDIUM DIALOG
+   ============================================ */
+
+.ua3e-compendium-form .form-group {
+  margin-bottom: 12px;
+}
+
+.ua3e-compendium-form label {
+  display: block;
+  font-size: 0.9em;
+  color: var(--ua3e-text-secondary);
+  margin-bottom: 4px;
+}
+
+/* ============================================
+   STATUS EFFECTS
+   ============================================ */
+
+.effect-control[data-status-id="wounded"] i {
+  color: #8B0000;
+}
+
+.effect-control[data-status-id="traumatized"] i {
+  color: #4B0082;
+}
+
+.effect-control[data-status-id="obsessed"] i {
+  color: #c9a84c;
+}
+
+.effect-control[data-status-id="hardened"] i {
+  color: #555555;
+}
+
+.effect-control[data-status-id="broken"] i {
+  color: #ff0000;
+}
+
+.effect-control[data-status-id="pursued"] i {
+  color: #8B4513;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 4px rgba(201, 168, 76, 0.3);
+    border-color: var(--ua3e-border-color);
+  }
+  50% { 
+    box-shadow: 0 0 12px rgba(201, 168, 76, 0.6);
+    border-color: var(--ua3e-text-accent);
+  }
+}
+
+.ua3e-obsession-mode .obsession-badge {
+  animation: pulse-glow 1.5s infinite;
+}
+
+/* ============================================
+   RESPONSIVE SIDEBAR
+   ============================================ */
+
+@media (max-width: 800px) {
+  .ua3e .create-entity {
+    font-size: 0.75em;
+    padding: 2px 4px;
+  }
+
+  .ua3e .create-entity span {
+    display: none;
+  }
+
+  .ua3e .create-entity i {
+    margin-right: 0;
+  }
+}
+
+/* ============================================
+   DIRECTORY LIST ITEMS
+   ============================================ */
+
+.directory-item.ua3e-item {
+  border-left: 3px solid transparent;
+}
+
+.directory-item.ua3e-item[data-type="character"] {
+  border-left-color: var(--ua3e-text-accent);
+}
+
+.directory-item.ua3e-item[data-type="npc"] {
+  border-left-color: var(--ua3e-failure);
+}
+
+.directory-item.ua3e-item[data-type="identity"] {
+  border-left-color: #8a6db5;
+}
+
+.directory-item.ua3e-item[data-type="equipment"] {
+  border-left-color: #4a9b4a;
+}
+
+/* ============================================
+   CONTEXT MENU
+   ============================================ */
+
+#context-menu.ua3e-context li {
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#context-menu.ua3e-context li:hover {
+  background: var(--ua3e-bg-hover);
+  color: var(--ua3e-text-accent);
+}
+
+#context-menu.ua3e-context li i {
+  margin-right: 6px;
+  width: 16px;
+  text-align: center;
+}
+
+/* ============================================
+   SIDEBAR DIRECTORY BUTTONS
+   ============================================ */
+
+.sidebar-tab .directory .directory-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  align-items: center;
+}
+
+.sidebar-tab .directory .directory-header .header-search {
+  flex: 1;
+  min-width: 120px;
+}
+
+.sidebar-tab .directory .directory-header button {
+  flex: 0 0 auto;
+}
+
+.ua3e-directory-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--ua3e-border-color);
+}
+
+.ua3e-directory-buttons .ua3e-btn {
+  flex: 1 1 calc(50% - 2px);
+  min-width: 80px;
+  background: var(--ua3e-bg-tertiary);
+  color: var(--ua3e-text-primary);
+  border: 1px solid var(--ua3e-border-color);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.ua3e-directory-buttons .ua3e-btn:hover {
+  background: var(--ua3e-bg-hover);
+  border-color: var(--ua3e-text-accent);
+  color: var(--ua3e-text-accent);
+}
+
+.ua3e-directory-buttons .ua3e-btn i {
+  font-size: 0.9em;
+}
+
+.ua3e-directory-buttons .ua3e-btn-character {
+  border-left: 2px solid var(--ua3e-text-accent);
+}
+
+.ua3e-directory-buttons .ua3e-btn-npc {
+  border-left: 2px solid var(--ua3e-failure);
+}
+
+.ua3e-directory-buttons .ua3e-btn-identity {
+  border-left: 2px solid #8a6db5;
+}
+
+.ua3e-directory-buttons .ua3e-btn-equipment {
+  border-left: 2px solid #4a9b4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-scene {
+  border-left: 2px solid #4a7c9b;
+}
+
+.ua3e-directory-buttons .ua3e-btn-journal {
+  border-left: 2px solid #9b7c4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-table {
+  border-left: 2px solid #9b4a7c;
+}
+
+.ua3e-directory-buttons .ua3e-btn-cards {
+  border-left: 2px solid #4a9b7c;
+}
+
+.ua3e-directory-buttons .ua3e-btn-playlist {
+  border-left: 2px solid #7c4a9b;
+}
+
+.ua3e-directory-buttons .ua3e-btn-compendium {
+  border-left: 2px solid #9b9b4a;
+}
+
+.ua3e-directory-buttons .ua3e-btn-macro {
+  border-left: 2px solid #4a4a9b;
+}
+
+/* ============================================
+   COLLAPSED SIDEBAR BUTTONS
+   ============================================ */
+
+.sidebar-tab.collapsed .ua3e-directory-buttons {
+  display: none;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 600px) {
+  .ua3e-directory-buttons .ua3e-btn span {
+    display: none;
+  }
+
+  .ua3e-directory-buttons .ua3e-btn {
+    flex: 0 0 36px;
+    padding: 4px;
+  }
+
+  .ua3e-directory-buttons .ua3e-btn i {
+    margin: 0;
+    font-size: 1.1em;
+  }
+}
+
+/* ============================================
+   DIRECTORY LIST STYLING
+   ============================================ */
+
+.sidebar-tab .directory-list .directory-item {
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.sidebar-tab .directory-list .directory-item:hover {
+  background: var(--ua3e-bg-hover);
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="character"] {
+  border-left-color: var(--ua3e-text-accent);
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="npc"] {
+  border-left-color: var(--ua3e-failure);
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="identity"] {
+  border-left-color: #8a6db5;
+}
+
+.sidebar-tab .directory-list .directory-item[data-document-type="equipment"] {
+  border-left-color: #4a9b4a;
+}

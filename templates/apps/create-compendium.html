@@ -1,0 +1,18 @@
+<form class="ua3e-compendium-form">
+  <div class="form-group">
+    <label>{{localize 'UA3E.Name'}}</label>
+    <input type="text" name="name" placeholder="{{localize 'UA3E.CompendiumNamePlaceholder'}}" required />
+  </div>
+  <div class="form-group">
+    <label>{{localize 'UA3E.Label'}}</label>
+    <input type="text" name="label" placeholder="{{localize 'UA3E.CompendiumLabelPlaceholder'}}" />
+  </div>
+  <div class="form-group">
+    <label>{{localize 'UA3E.Type'}}</label>
+    <select name="type">
+      {{#each types}}
+      <option value="{{this}}">{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+</form>

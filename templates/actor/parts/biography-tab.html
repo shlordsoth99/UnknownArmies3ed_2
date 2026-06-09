@@ -1,0 +1,40 @@
+<div class="biography-tab-content">
+  <div class="biography-section">
+    <h2>{{localize 'UA3E.Biography'}}</h2>
+    <div class="editor-container">
+      {{editor system.biography target="system.biography" button=true owner=owner editable=editable}}
+    </div>
+  </div>
+
+  <div class="description-section">
+    <h3>{{localize 'UA3E.Description'}}</h3>
+    <textarea name="system.identity.description" rows="6" placeholder="{{localize 'UA3E.DescriptionPlaceholder'}}">{{system.identity.description}}</textarea>
+  </div>
+
+  <!-- Character Summary -->
+  <div class="summary-section">
+    <h3>{{localize 'UA3E.CharacterSummary'}}</h3>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <label>{{localize 'UA3E.TotalHardened'}}:</label>
+        <span>{{system.totalHardened}}</span>
+      </div>
+      <div class="summary-item">
+        <label>{{localize 'UA3E.IdentitiesCount'}}:</label>
+        <span>{{length identities}}</span>
+      </div>
+      <div class="summary-item">
+        <label>{{localize 'UA3E.TraumasCount'}}:</label>
+        <span>{{length traumas}}</span>
+      </div>
+      <div class="summary-item">
+        <label>{{localize 'UA3E.RelationshipsCount'}}:</label>
+        <span>{{length relationships}}</span>
+      </div>
+      <div class="summary-item">
+        <label>{{localize 'UA3E.InitiativeBonus'}}:</label>
+        <span>+{{system.initiativeBonus}}</span>
+      </div>
+    </div>
+  </div>
+</div>

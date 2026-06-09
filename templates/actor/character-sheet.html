@@ -1,0 +1,93 @@
+<form class="{{#if darkMode}}dark-mode{{/if}}" autocomplete="off">
+  <!-- Header -->
+  <header class="sheet-header">
+    <div class="header-left">
+      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    </div>
+    <div class="header-center">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'UA3E.Name'}}" />
+      </h1>
+      <div class="identity-info">
+        <div class="info-row">
+          <label>{{localize 'UA3E.Aliases'}}:</label>
+          <input type="text" name="system.identity.aliases" value="{{system.identity.aliases}}" />
+        </div>
+        <div class="info-row obsession-row">
+          <label>{{localize 'UA3E.Obsession'}}:</label>
+          <input type="text" name="system.identity.obsession" value="{{system.identity.obsession}}" />
+          <span class="obsession-tag">{{localize 'UA3E.ObsessionTag'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="health-block">
+        <label>{{localize 'UA3E.Health'}}</label>
+        <div class="health-display">
+          <button type="button" class="health-adjust" data-adjust="-5">-</button>
+          <span class="health-value">{{health.value}}</span>
+          <span class="health-separator">/</span>
+          <span class="health-max">{{health.max}}</span>
+          <button type="button" class="health-adjust" data-adjust="5">+</button>
+        </div>
+        <div class="health-bar">
+          <div class="health-fill" style="width: {{percentage health.value health.max}}%"></div>
+        </div>
+        <div class="wound-threshold">
+          {{localize 'UA3E.WoundThreshold'}}: {{woundThreshold}}
+        </div>
+      </div>
+      <div class="stability-block">
+        <label>{{localize 'UA3E.Stability'}}</label>
+        <div class="stability-display">
+          <button type="button" class="stability-adjust" data-adjust="-5">-</button>
+          <span class="stability-value">{{stability.value}}</span>
+          <span class="stability-separator">/</span>
+          <span class="stability-max">{{stability.max}}</span>
+          <button type="button" class="stability-adjust" data-adjust="5">+</button>
+        </div>
+        <div class="stability-bar">
+          <div class="stability-fill" style="width: {{percentage stability.value stability.max}}%"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="identity">{{localize 'UA3E.TabIdentity'}}</a>
+    <a class="item" data-tab="abilities">{{localize 'UA3E.TabAbilities'}}</a>
+    <a class="item" data-tab="stress">{{localize 'UA3E.TabStress'}}</a>
+    <a class="item" data-tab="equipment">{{localize 'UA3E.TabEquipment'}}</a>
+    <a class="item" data-tab="biography">{{localize 'UA3E.TabBiography'}}</a>
+  </nav>
+
+  <!-- Body -->
+  <section class="sheet-body">
+
+    <!-- Identity Tab -->
+    <div class="tab identity-tab" data-group="primary" data-tab="identity">
+      {{> "systems/unknown-armies-3e/templates/actor/parts/identity-tab.html"}}
+    </div>
+
+    <!-- Abilities Tab -->
+    <div class="tab abilities-tab" data-group="primary" data-tab="abilities">
+      {{> "systems/unknown-armies-3e/templates/actor/parts/abilities-tab.html"}}
+    </div>
+
+    <!-- Stress Tab -->
+    <div class="tab stress-tab" data-group="primary" data-tab="stress">
+      {{> "systems/unknown-armies-3e/templates/actor/parts/stress-tab.html"}}
+    </div>
+
+    <!-- Equipment Tab -->
+    <div class="tab equipment-tab" data-group="primary" data-tab="equipment">
+      {{> "systems/unknown-armies-3e/templates/actor/parts/equipment-tab.html"}}
+    </div>
+
+    <!-- Biography Tab -->
+    <div class="tab biography-tab" data-group="primary" data-tab="biography">
+      {{> "systems/unknown-armies-3e/templates/actor/parts/biography-tab.html"}}
+    </div>
+  </section>
+</form>
